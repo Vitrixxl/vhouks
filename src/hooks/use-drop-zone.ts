@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 
 export type UseDropZoneParams = {
@@ -27,14 +28,13 @@ export const useDropZone = ({ onDrop }: UseDropZoneParams) => {
       dragLayers.current++;
       setIsDragginFile(true);
     }
-    if (isDraggingFile) return;
   };
   const handleDragLeave = (e: DragEvent) => {
     dragLayers.current--;
     if (isHover.current) e.preventDefault();
 
-    if (dragLayers.current <= 0) {
-      if (isHover.current) setIsDragginFile(false);
+    if (dragLayers.current == 0) {
+      setIsDragginFile(false);
     }
   };
 
@@ -44,6 +44,7 @@ export const useDropZone = ({ onDrop }: UseDropZoneParams) => {
 
   const handleDrop = (e: DragEvent) => {
     if (!isHover.current || !e.dataTransfer?.files) return;
+    dragLayers.current = 0;
 
     e.preventDefault();
     isHover.current = false;
